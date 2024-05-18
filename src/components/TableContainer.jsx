@@ -14,8 +14,8 @@ const TableContainer = () => {
         })
     }, [])
     return (
-        <table class="min-w-full divide-y divide-gray-200 overflow-x-auto">
-            <thead class="bg-gray-50">
+        <table class="min-w-[80%] divide-y divide-gray-200 mx-auto">
+            <thead class="bg-[#E5E7EB]">
                 <tr>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         FLIGHT
@@ -49,8 +49,8 @@ const TableContainer = () => {
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
                 {
-                    flightsData.map((flight) => (
-                        < tr key={flight._id}>
+                    flightsData.map((flight, i) => (
+                        < tr key={flight._id} class={i % 2 == 1 ? `bg-[#E5E7EB]` :  `bg-white`} >
                             <td className="px-6 py-4 whitespace-nowrap">
                                 {flight?.itineraries[0]?.segments?.map((flight, i) =>
                                 (
@@ -126,7 +126,7 @@ const TableContainer = () => {
                                 <div className="text-sm text-gray-900">
                                     {flight?.price}
                                 </div>
-                               <button className='bg-blue-900 px-3 py-1 rounded-md text-white'>SELECT</button>
+                                <button className='bg-[#312E81] text-sm px-3 py-1 rounded-md text-white'>SELECT</button>
                             </td>
                         </tr>
                     ))
