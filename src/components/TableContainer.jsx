@@ -1,21 +1,9 @@
 import React from 'react';
-import axios from 'axios'
-import { useEffect, useState } from 'react'
-const TableContainer = () => {
+const TableContainer = ({ flightsData }) => {
 
-    
-const [flightsData,setFlightsData]=useState([])
-useEffect(() => {
-  axios.get('data.json').then((res) => {
-    setFlightsData(res.data.flightOffer)
-    console.log("result is ", res)
-  }).then((err) => {
-    console.log("err is ", err)
-  })
-}, [])
     return (
-        <table class="min-w-full divide-y divide-gray-200 overflow-x-auto">
-            <thead class="bg-gray-50">
+        <table class="min-w-[80%] divide-y divide-gray-200 mx-auto">
+            <thead class="bg-[#E5E7EB]">
                 <tr>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         FLIGHT
@@ -44,24 +32,93 @@ useEffect(() => {
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         PRICE
                     </th>
-                   
+
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-                  {
-                     flightsData.map((flight)=>(
-                    < tr key={flight._id}>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">{flight?.class[0]}</div>
-                            {/* <div class="text-sm text-gray-500">{flight?.class[1]}</div> */}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">{flight?.fareBasis[0]}</div>
-                            <div class="text-sm text-gray-500">{flight?.fareBasis[1]}</div>
-                        </td>
-                    </tr>
-                     ))
-                  }    
+                {
+                    flightsData?.map((flight, i) => (
+                        < tr key={flight?._id} class={i % 2 == 1 ? `bg-[#E5E7EB]` : `bg-white`} >
+                            <td className="px-6 py-4 whitespace-nowrap">
+                                {flight?.itineraries[0]?.segments?.map((flight, i) =>
+                                (
+                                    <div key={i} className="text-sm text-gray-900">
+                                        {flight?.marketingCarrier}  {flight?.aircraft}
+                                    </div>
+                                ))
+                                }
+                            </td>
+
+                            <td className="px-6 py-4 whitespace-nowrap">
+                                {flight?.itineraries[0]?.segments?.map((flight, i) =>
+                                (
+                                    <div key={i} className="text-sm text-gray-900">
+                                        {flight?.flightNumber}
+                                    </div>
+
+                                ))
+                                }
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                                {flight?.class[0]?.map((classArr, i) => (
+                                    <div key={i} className="text-sm text-gray-900">
+                                        {classArr}
+                                    </div>
+                                ))}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                                {flight?.fareBasis[0]?.map((fareArr, i) => (
+                                    <div key={i} className="text-sm text-gray-900">
+                                        {fareArr}
+                                    </div>
+                                ))}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                                {flight?.itineraries[0]?.segments?.map((flight, i) =>
+                                (
+                                    <div key={i} className="text-sm text-gray-900">
+                                        {flight?.departure?.iataCode} {flight?.arrival?.iataCode}
+                                    </div>
+
+                                ))
+                                }
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                                {flight?.itineraries[0]?.segments?.map((flight, i) =>
+                                (
+                                    <div key={i} className="text-sm text-gray-900">
+                                        {flight?.arrival?.at}
+                                    </div>
+
+                                ))
+                                }
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                                {flight?.itineraries[0]?.segments?.map((flight, i) =>
+                                (
+                                    <div key={i} className="text-sm text-gray-900">
+                                        {flight?.departure?.at}
+                                    </div>
+
+                                ))
+                                }
+                            </td>
+
+                            <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="text-sm text-gray-900">
+                                    {flight?.itineraries[0]?.duration
+                                    }
+                                </div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="text-sm text-gray-900">
+                                    {flight?.price}
+                                </div>
+                                <button className='bg-[#312E81] text-sm px-3 py-1 rounded-md text-white'>SELECT</button>
+                            </td>
+                        </tr>
+                    ))
+                }
             </tbody>
         </table>
     );
