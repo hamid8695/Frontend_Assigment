@@ -1,18 +1,6 @@
 import React from 'react';
-import axios from 'axios'
-import { useEffect, useState } from 'react'
-const TableContainer = () => {
+const TableContainer = ({ flightsData }) => {
 
-
-    const [flightsData, setFlightsData] = useState([])
-    useEffect(() => {
-        axios.get('data.json').then((res) => {
-            setFlightsData(res.data.flightOffer)
-            console.log("result is ", res)
-        }).then((err) => {
-            console.log("err is ", err)
-        })
-    }, [])
     return (
         <table class="min-w-[80%] divide-y divide-gray-200 mx-auto">
             <thead class="bg-[#E5E7EB]">
@@ -49,8 +37,8 @@ const TableContainer = () => {
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
                 {
-                    flightsData.map((flight, i) => (
-                        < tr key={flight._id} class={i % 2 == 1 ? `bg-[#E5E7EB]` :  `bg-white`} >
+                    flightsData?.map((flight, i) => (
+                        < tr key={flight?._id} class={i % 2 == 1 ? `bg-[#E5E7EB]` : `bg-white`} >
                             <td className="px-6 py-4 whitespace-nowrap">
                                 {flight?.itineraries[0]?.segments?.map((flight, i) =>
                                 (
@@ -72,14 +60,14 @@ const TableContainer = () => {
                                 }
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                                {flight.class[0].map((classArr, i) => (
+                                {flight?.class[0]?.map((classArr, i) => (
                                     <div key={i} className="text-sm text-gray-900">
                                         {classArr}
                                     </div>
                                 ))}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                                {flight.fareBasis[0].map((fareArr, i) => (
+                                {flight?.fareBasis[0]?.map((fareArr, i) => (
                                     <div key={i} className="text-sm text-gray-900">
                                         {fareArr}
                                     </div>

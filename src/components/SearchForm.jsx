@@ -1,9 +1,22 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useState } from 'react';
+import ReactDatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
+import TableContainer from './TableContainer';
 
 const SearchForm = () => {
+    const [startDate, setStartDate] = useState(new Date());
+    const [flightsData, setFlightsData] = useState([])
+    const handleSearchFlightData = () => {
+        axios.get('data.json').then((res) => {
+            setFlightsData(res.data)
+        }).then((err) => {
+            console.log("err is ", err)
+        })
+    }
     return (
         <div >
-            <h1 className='max-w-[80%] mx-auto font-bold text-3xl'>Master Price</h1>
+            <h1 className='max-w-[80%] mx-auto font-bold text-2xl'>Master Price</h1>
             <hr />
             < div className='max-w-[80%] mx-auto my-6'>
                 <div class="flex space-x-4 justify-center">
@@ -18,6 +31,114 @@ const SearchForm = () => {
                     </button>
                 </div>
                 <div className='border-b-2 border-[#D4D8FC] mt-6' />
+                <div className='mt-6'>
+                    <form className='flex justify-between space-x-2'>
+                        <div>
+                            <input
+                                type="text"
+                                id="lhr"
+                                class="bg-gray-50 border
+                            border-gray-300
+                             text-gray-900 
+                             text-sm rounded-sm block w-32 p-2.5"
+                                placeholder="LHR" />
+
+                        </div>
+                        <div>
+                            <input
+                                type="text"
+                                id="cdg"
+                                class="bg-gray-50 border
+                                border-gray-300
+                                 text-gray-900 
+                                 text-sm rounded-sm block w-32 p-2.5"
+                                placeholder="CDG" />
+
+                        </div>
+                        <div>
+                            <ReactDatePicker
+                                showIcon
+                                className="bg-gray-50
+                                 border border-gray-300
+                                  text-gray-900  rounded-sm
+                                    block w-32 p-2.5 "
+                                selected={startDate}
+                                onChange={(date) => setStartDate(date)}
+                            />
+                        </div>
+                        <div>
+                            <select id="day-1"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm block w-32 p-2.5">
+                                <option selected>Day</option>
+                                <option value="Sa">Saturday</option>
+                                <option value="Su">Sunday</option>
+                                <option value="Mo">Monday</option>
+                                <option value="Tu">Tuesday</option>
+                                <option value="We">Wednesday</option>
+                                <option value="Th">Thursday</option>
+                                <option value="Fr+">Friday</option>
+                            </select>
+                        </div>
+                        <div>
+                            <select
+                                id="day-2"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm block w-32 p-2.5"
+                            >
+                                <option selected>Day</option>
+                                <option value="Sa">Saturday</option>
+                                <option value="Su">Sunday</option>
+                                <option value="Mo">Monday</option>
+                                <option value="Tu">Tuesday</option>
+                                <option value="We">Wednesday</option>
+                                <option value="Th">Thursday</option>
+                                <option value="Fr+">Friday</option>
+                            </select>
+                        </div>
+                        <div>
+                            <select id="times"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm block w-32 p-2.5"
+                            >
+                                <option selected>Any Time</option>
+                                <option value="5">5.00.00</option>
+                                <option value="4">4.00.00</option>
+                                <option value="3">3.00.00</option>
+                                <option value="2">2.00.00</option>
+                                <option value="1">1.00.00</option>
+                            </select>
+                        </div>
+                        <span className='text-xl font-semibold mt-1 '>+</span>
+                        <div>
+                            <select id="adt"
+                                class="bg-gray-50 border border-gray-300 text-gray-900  text-sm rounded-sm block w-32 p-2.5"
+                            >
+                                <option selected>ADT</option>
+                                <option value="Sa">Saturday</option>
+                                <option value="Su">Sunday</option>
+                                <option value="Mo">Monday</option>
+                                <option value="Tu">Tuesday</option>
+                                <option value="We">Wednesday</option>
+                                <option value="Th">Thursday</option>
+                                <option value="Fr+">Friday</option>
+                            </select>
+                        </div>
+                        <div>
+                            <select id="serial"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm block w-32 p-2.5"
+                            >
+                                <option selected>1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                            </select>
+                        </div>
+                        <span className='text-xl font-semibold mt-1'>+</span>
+                    </form>
+                </div>
                 <div className='border-b-2 border-[#D4D8FC] mt-6' />
                 < div className='flex justify-between mt-3'>
                     <div class="mb-[0.125rem] block min-h-[1.5rem] ps-[1.5rem]">
@@ -46,10 +167,15 @@ const SearchForm = () => {
                             <b class="pl-2">PDT</b>
                         </label>
                     </div>
-                    <button className='bg-[#312E81] text-sm px-6 py-1 rounded-sm text-white'>Search</button>
+                    <button onClick={() => handleSearchFlightData()} className='bg-[#312E81] text-sm px-6 py-1 rounded-sm text-white'>Search</button>
                 </div>
                 <div className='border-b-2 border-[#2231b7] mt-2' />
+                <p>{flightsData.message}</p>
             </div>
+            {
+                flightsData?.flightOffer &&
+                <TableContainer flightsData={flightsData?.flightOffer} />
+            }
         </div>
     );
 };

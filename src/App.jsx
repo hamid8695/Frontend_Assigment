@@ -1,14 +1,10 @@
 
-import SearchForm from './components/SearchForm'
-import TableContainer from './components/TableContainer'
-
-
+import Home from './pages/Home'
 function App() {
 
   return (
     <>
-      <SearchForm />
-      <TableContainer />
+      <Home />
     </>
   )
 }
